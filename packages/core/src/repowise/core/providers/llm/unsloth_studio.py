@@ -56,8 +56,10 @@ _DEFAULT_BASE_URL = "http://localhost:8000"
 
 
 def _normalize_base_url(url: str) -> str:
-    """Ensure base_url ends with /v1 for OpenAI SDK compatibility."""
+    """Ensure base_url has http:// protocol and ends with /v1."""
     url = url.rstrip("/")
+    if not url.startswith(("http://", "https://")):
+        url = "http://" + url
     if not url.endswith("/v1"):
         url += "/v1"
     return url

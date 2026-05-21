@@ -497,6 +497,7 @@ def resolve_provider(
             "deepseek": ["DEEPSEEK_BASE_URL"],
             "ollama": ["OLLAMA_BASE_URL"],
             "litellm": ["LITELLM_BASE_URL", "LITELLM_API_BASE"],
+            "unsloth_studio": ["UNSLOTH_STUDIO_BASE_URL"],
         }
         for var in env_vars.get(name, []):
             val = os.environ.get(var)

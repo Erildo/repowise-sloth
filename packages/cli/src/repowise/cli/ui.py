@@ -523,14 +523,19 @@ def interactive_provider_select(
     )
     chosen = providers[int(chosen_idx) - 1]
 
-    # --- inline API key entry if missing ---
+    # --- inline API key / URL entry if missing ---
     if chosen not in detected:
         env_var = _PROVIDER_ENV[chosen]
         signup_url = _PROVIDER_SIGNUP.get(chosen, "")
         console.print()
-        console.print(f"  [bold]{chosen}[/bold] requires [cyan]{env_var}[/cyan].")
-        if signup_url:
-            console.print(f"  Get your API key here: [{BRAND}]{signup_url}[/]")
+        if chosen in _URL_PROVIDERS:
+            console.print(f"  [bold]{chosen}[/bold] needs a server URL ([cyan]{env_var}[/cyan]).")
+            if signup_url:
+                console.print(f"  Download / install: [{BRAND}]{signup_url}[/]")
+        else:
+            console.print(f"  [bold]{chosen}[/bold] requires [cyan]{env_var}[/cyan].")
+            if signup_url:
+                console.print(f"  Get your API key here: [{BRAND}]{signup_url}[/]")
         console.print()
         key = _prompt_api_key(console, chosen, env_var, repo_path=repo_path)
         if not key:
@@ -573,6 +578,9 @@ def _is_flagship_model(model: str) -> bool:
     return any(tok in m for tok in _FLAGSHIP_MODEL_TOKENS)
 
 
+_URL_PROVIDERS: frozenset[str] = frozenset({"ollama", "unsloth_studio"})
+
+
 def _prompt_api_key(
     console: Console,
     provider: str,
@@ -580,14 +588,16 @@ def _prompt_api_key(
     *,
     repo_path: Path | None = None,
 ) -> str | None:
-    """Prompt for an API key, set env var, and optionally save to .repowise/.env.
+    """Prompt for an API key or base URL, set env var, and optionally save.
 
-    Returns the key, or ``None`` if the user pressed Enter without typing.
+    Returns the value, or ``None`` if the user pressed Enter without typing.
     """
+    is_url = provider in _URL_PROVIDERS
+    prompt_text = "  Server URL" if is_url else "  Paste your API key (hidden)"
     key = click.prompt(
-        "  Paste your API key (hidden)",
+        prompt_text,
         default="",
-        hide_input=True,
+        hide_input=not is_url,
         show_default=False,
     )
     key = key.strip()
@@ -595,7 +605,7 @@ def _prompt_api_key(
         return None
 
     os.environ[env_var] = key
-    console.print(f"  [{OK}]✓ Key set for this session[/]")
+    console.print(f"  [{OK}]✓ {'URL' if is_url else 'Key'} set for this session[/]")
 
     # Offer to save for future runs
     if repo_path is not None:
