@@ -284,6 +284,7 @@ _PROVIDER_DEFAULTS: dict[str, str] = {
     "ollama": "llama3.2",
     "openrouter": "anthropic/claude-sonnet-4.6",
     "litellm": "groq/llama-3.1-70b-versatile",
+    "unsloth_studio": "gemma-4-E2B-it-GGUF",
 }
 
 _PROVIDER_ENV: dict[str, str] = {
@@ -293,6 +294,7 @@ _PROVIDER_ENV: dict[str, str] = {
     "deepseek": "DEEPSEEK_API_KEY",
     "ollama": "OLLAMA_BASE_URL",
     "openrouter": "OPENROUTER_API_KEY",
+    "unsloth_studio": "UNSLOTH_STUDIO_BASE_URL",
 }
 
 _PROVIDER_SIGNUP: dict[str, str] = {
@@ -302,6 +304,7 @@ _PROVIDER_SIGNUP: dict[str, str] = {
     "deepseek": "https://platform.deepseek.com/api_keys",
     "ollama": "https://ollama.com/download",
     "openrouter": "https://openrouter.ai/keys",
+    "unsloth_studio": "https://unsloth.ai",
 }
 
 
