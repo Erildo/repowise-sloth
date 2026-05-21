@@ -14,7 +14,8 @@ by default and is intended for:
 Usage:
     provider = UnslothStudioProvider(
         model="gemma-4-E2B-it-GGUF",
-        base_url="http://localhost:8000",
+        base_url="http://127.0.0.1:8888",
+        api_key="sk-unsloth-YOUR_KEY",
     )
 """
 
@@ -52,7 +53,7 @@ _MAX_RETRIES = 3
 _MIN_WAIT = 1.0
 _MAX_WAIT = 8.0
 
-_DEFAULT_BASE_URL = "http://localhost:8000"
+_DEFAULT_BASE_URL = "http://127.0.0.1:8888"
 
 
 def _normalize_base_url(url: str) -> str:

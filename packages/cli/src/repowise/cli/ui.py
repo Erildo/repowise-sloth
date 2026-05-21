@@ -593,10 +593,15 @@ def _prompt_api_key(
     Returns the value, or ``None`` if the user pressed Enter without typing.
     """
     is_url = provider in _URL_PROVIDERS
-    prompt_text = "  Server URL" if is_url else "  Paste your API key (hidden)"
+    _URL_DEFAULTS = {
+        "ollama": "http://localhost:11434",
+        "unsloth_studio": "http://127.0.0.1:8888",
+    }
+    url_default = _URL_DEFAULTS.get(provider, "") if is_url else ""
+    prompt_text = f"  Server URL [{url_default}]" if is_url else "  Paste your API key (hidden)"
     key = click.prompt(
         prompt_text,
-        default="",
+        default=url_default,
         hide_input=not is_url,
         show_default=False,
     )

@@ -642,6 +642,7 @@ def validate_provider_config(provider_name: str | None = None) -> list[str]:
         "gemini": ["GEMINI_API_KEY", "GOOGLE_API_KEY"],  # Either one
         "ollama": ["OLLAMA_BASE_URL"],
         "litellm": ["LITELLM_API_KEY"],  # May need others depending on backend
+        "unsloth_studio": ["UNSLOTH_STUDIO_BASE_URL"],
     }
 
     if provider_name:
