@@ -51,6 +51,8 @@ PROVIDER_DEFAULTS: dict[str, RateLimitConfig] = {
     "ollama": RateLimitConfig(requests_per_minute=1_000, tokens_per_minute=10_000_000),
     "litellm": RateLimitConfig(requests_per_minute=60, tokens_per_minute=150_000),
     "deepseek": RateLimitConfig(requests_per_minute=60, tokens_per_minute=200_000),
+    # Unsloth Studio runs locally — match ollama's generous cap
+    "unsloth_studio": RateLimitConfig(requests_per_minute=1_000, tokens_per_minute=10_000_000),
 }
 
 

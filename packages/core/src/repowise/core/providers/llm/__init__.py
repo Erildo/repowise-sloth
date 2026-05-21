@@ -16,6 +16,7 @@ Built-in providers:
     deepseek   — deepseek-v4-flash, deepseek-v4-pro via api.deepseek.com
     ollama     — local inference (llama3.2, codellama, etc.)
     litellm    — 100+ providers via LiteLLM proxy
+    unsloth_studio — local Unsloth Studio inference (OpenAI-compatible)
     mock       — deterministic test provider
 """
 

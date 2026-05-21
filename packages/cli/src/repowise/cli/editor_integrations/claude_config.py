@@ -74,7 +74,7 @@ def install_claude_code_hooks() -> Path | None:
         "hooks": [
             {
                 "type": "command",
-                "command": "repowise-augment",
+                "command": "repowise-sloth-augment",
                 "timeout": 10,
                 "statusMessage": "Checking codebase context...",
             }
@@ -114,14 +114,22 @@ def _has_repowise_hook(hook_list: list) -> bool:
     for entry in hook_list:
         for hook in entry.get("hooks", []):
             cmd = hook.get("command", "")
-            if "repowise-augment" in cmd or "repowise augment" in cmd:
+            if (
+                "repowise-sloth-augment" in cmd
+                or "repowise-augment" in cmd
+                or "repowise augment" in cmd
+            ):
                 return True
     return False
 
 
 def _is_repowise_hook(hook: dict) -> bool:
     cmd = hook.get("command", "")
-    return "repowise-augment" in cmd or "repowise augment" in cmd
+    return (
+        "repowise-sloth-augment" in cmd
+        or "repowise-augment" in cmd
+        or "repowise augment" in cmd
+    )
 
 
 def _strip_repowise_pretool(hook_list: list) -> bool:
@@ -144,8 +152,8 @@ def _migrate_legacy_hook(hook_list: list) -> bool:
     for entry in hook_list:
         for hook in entry.get("hooks", []):
             cmd = hook.get("command", "")
-            if cmd == "repowise augment":
-                hook["command"] = "repowise-augment"
+            if cmd in ("repowise augment", "repowise-augment"):
+                hook["command"] = "repowise-sloth-augment"
                 changed = True
         matcher = entry.get("matcher", "")
         only_repowise = entry.get("hooks") and all(

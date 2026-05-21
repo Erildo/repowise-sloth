@@ -59,7 +59,7 @@ fix: format lint  ## Format + lint with auto-fix
 
 health-check:  ## Run the code-health analyzer against this repo and fail on regressions
 	uv run pytest tests/unit/health/ tests/unit/server/test_mcp.py -v
-	uv run repowise health --format json > /tmp/repowise-health-report.json || true
+	uv run repowise-sloth health --format json > /tmp/repowise-health-report.json || true
 	@echo "Health report → /tmp/repowise-health-report.json"
 
 health-bench:  ## Run the 3,000-file health analyzer perf benchmark

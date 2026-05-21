@@ -12,10 +12,10 @@ resolution-markers = [
 
 [manifest]
 members = [
-    "repowise",
     "repowise-cli",
     "repowise-core",
     "repowise-server",
+    "repowise-sloth",
 ]
 
 [[package]]
@@ -3039,7 +3039,38 @@ wheels = [
 ]
 
 [[package]]
-name = "repowise"
+name = "repowise-cli"
+version = "0.1.2"
+source = { editable = "packages/cli" }
+dependencies = [
+    { name = "repowise-core" },
+    { name = "repowise-server" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "repowise-core", editable = "packages/core" },
+    { name = "repowise-server", editable = "packages/server" },
+]
+
+[[package]]
+name = "repowise-core"
+version = "0.1.2"
+source = { editable = "packages/core" }
+
+[[package]]
+name = "repowise-server"
+version = "0.1.2"
+source = { editable = "packages/server" }
+dependencies = [
+    { name = "repowise-core" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "repowise-core", editable = "packages/core" }]
+
+[[package]]
+name = "repowise-sloth"
 version = "0.10.0"
 source = { editable = "." }
 dependencies = [
@@ -3189,37 +3220,6 @@ dev = [
     { name = "time-machine", specifier = ">=2.14,<3" },
     { name = "types-networkx", specifier = ">=3.3,<4" },
 ]
-
-[[package]]
-name = "repowise-cli"
-version = "0.1.2"
-source = { editable = "packages/cli" }
-dependencies = [
-    { name = "repowise-core" },
-    { name = "repowise-server" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "repowise-core", editable = "packages/core" },
-    { name = "repowise-server", editable = "packages/server" },
-]
-
-[[package]]
-name = "repowise-core"
-version = "0.1.2"
-source = { editable = "packages/core" }
-
-[[package]]
-name = "repowise-server"
-version = "0.1.2"
-source = { editable = "packages/server" }
-dependencies = [
-    { name = "repowise-core" },
-]
-
-[package.metadata]
-requires-dist = [{ name = "repowise-core", editable = "packages/core" }]
 
 [[package]]
 name = "requests"

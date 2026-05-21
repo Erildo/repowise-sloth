@@ -11,6 +11,7 @@ Built-in providers:
     - deepseek    → DeepSeekProvider
     - ollama      → OllamaProvider
     - litellm     → LiteLLMProvider
+    - unsloth_studio → UnslothStudioProvider
     - mock        → MockProvider (testing only)
 
 Custom provider registration:
@@ -43,6 +44,7 @@ _BUILTIN_PROVIDERS: dict[str, tuple[str, str]] = {
     "ollama": ("repowise.core.providers.llm.ollama", "OllamaProvider"),
     "litellm": ("repowise.core.providers.llm.litellm", "LiteLLMProvider"),
     "deepseek": ("repowise.core.providers.llm.deepseek", "DeepSeekProvider"),
+    "unsloth_studio": ("repowise.core.providers.llm.unsloth_studio", "UnslothStudioProvider"),
     "mock": ("repowise.core.providers.llm.mock", "MockProvider"),
 }
 
@@ -140,6 +142,7 @@ def get_provider(
             "ollama": "openai",  # ollama uses the openai package
             "openrouter": "openai",  # openrouter uses the openai package
             "deepseek": "openai",  # deepseek uses the openai package
+            "unsloth_studio": "openai",  # unsloth studio uses the openai package
             "litellm": "litellm",
         }
         package = _missing.get(name, name)

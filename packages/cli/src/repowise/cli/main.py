@@ -27,7 +27,7 @@ from repowise.cli.commands.workspace_cmd import workspace_group
 
 
 @click.group()
-@click.version_option(version=__version__, prog_name="repowise")
+@click.version_option(version=__version__, prog_name="repowise-sloth")
 @click.pass_context
 def cli(ctx: click.Context) -> None:
     """repowise -- codebase intelligence for developers and AI."""

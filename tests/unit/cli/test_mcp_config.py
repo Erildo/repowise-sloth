@@ -22,7 +22,7 @@ def test_save_root_mcp_config_creates_missing_file(tmp_path: Path) -> None:
     config_path = mcp_config.save_root_mcp_config(tmp_path)
 
     saved = json.loads(config_path.read_text(encoding="utf-8"))
-    assert "repowise" in saved["mcpServers"]
+    assert "repowise-sloth" in saved["mcpServers"]
 
 
 def test_save_root_mcp_config_merges_valid_existing_file(tmp_path: Path) -> None:
@@ -41,7 +41,7 @@ def test_save_root_mcp_config_merges_valid_existing_file(tmp_path: Path) -> None
 
     saved = json.loads(config_path.read_text(encoding="utf-8"))
     assert saved["mcpServers"]["other"] == {"command": "other"}
-    assert "repowise" in saved["mcpServers"]
+    assert "repowise-sloth" in saved["mcpServers"]
     assert saved["custom"] == {"preserved": True}
 
 
@@ -62,7 +62,7 @@ def test_merge_mcp_entry_creates_missing_file(tmp_path: Path) -> None:
     assert mcp_config.merge_mcp_entry(config_path, _repowise_entry(tmp_path))
 
     saved = json.loads(config_path.read_text(encoding="utf-8"))
-    assert "repowise" in saved["mcpServers"]
+    assert "repowise-sloth" in saved["mcpServers"]
 
 
 def test_merge_mcp_entry_merges_valid_existing_file(tmp_path: Path) -> None:
@@ -81,7 +81,7 @@ def test_merge_mcp_entry_merges_valid_existing_file(tmp_path: Path) -> None:
 
     saved = json.loads(config_path.read_text(encoding="utf-8"))
     assert saved["mcpServers"]["existing"] == {"command": "existing"}
-    assert "repowise" in saved["mcpServers"]
+    assert "repowise-sloth" in saved["mcpServers"]
     assert saved["permissions"] == {"allow": ["Bash(git status:*)"]}
 
 
@@ -106,7 +106,7 @@ def _post_repowise_entries(saved: dict) -> list:
         (entry.get("matcher"), h["command"])
         for entry in saved["hooks"].get("PostToolUse", [])
         for h in entry["hooks"]
-        if "repowise" in h.get("command", "")
+        if "repowise-sloth" in h.get("command", "")
     ]
 
 
@@ -123,7 +123,7 @@ def test_install_claude_code_hooks_creates_missing_file(
     assert settings_path == tmp_path / ".claude" / "settings.json"
     saved = json.loads(settings_path.read_text(encoding="utf-8"))
     assert "PreToolUse" not in saved["hooks"]
-    assert _post_repowise_entries(saved) == [("Bash|Grep|Glob", "repowise-augment")]
+    assert _post_repowise_entries(saved) == [("Bash|Grep|Glob", "repowise-sloth-augment")]
 
 
 def test_install_claude_code_hooks_preserves_user_pretool_hooks(
@@ -158,7 +158,7 @@ def test_install_claude_code_hooks_preserves_user_pretool_hooks(
     assert saved["hooks"]["PreToolUse"][0]["matcher"] == "Read"
     assert saved["hooks"]["PreToolUse"][0]["hooks"][0]["command"] == "echo read"
     # PostToolUse now has the repowise hook.
-    assert _post_repowise_entries(saved) == [("Bash|Grep|Glob", "repowise-augment")]
+    assert _post_repowise_entries(saved) == [("Bash|Grep|Glob", "repowise-sloth-augment")]
 
 
 # ---------------------------------------------------------------------------
@@ -206,7 +206,7 @@ def test_install_claude_code_hooks_migrates_pre_0_6_1_command(
 
     saved = json.loads(settings_path.read_text(encoding="utf-8"))
     assert "PreToolUse" not in saved["hooks"]
-    assert _post_repowise_entries(saved) == [("Bash|Grep|Glob", "repowise-augment")]
+    assert _post_repowise_entries(saved) == [("Bash|Grep|Glob", "repowise-sloth-augment")]
 
 
 def test_install_claude_code_hooks_migrates_pre_0_6_2_matcher(
@@ -226,7 +226,7 @@ def test_install_claude_code_hooks_migrates_pre_0_6_2_matcher(
                         {
                             "matcher": "Grep|Glob",
                             "hooks": [
-                                {"type": "command", "command": "repowise-augment"}
+                                {"type": "command", "command": "repowise-sloth-augment"}
                             ],
                         }
                     ],
@@ -234,7 +234,7 @@ def test_install_claude_code_hooks_migrates_pre_0_6_2_matcher(
                         {
                             "matcher": "Bash",
                             "hooks": [
-                                {"type": "command", "command": "repowise-augment"}
+                                {"type": "command", "command": "repowise-sloth-augment"}
                             ],
                         }
                     ],
@@ -248,7 +248,7 @@ def test_install_claude_code_hooks_migrates_pre_0_6_2_matcher(
 
     saved = json.loads(settings_path.read_text(encoding="utf-8"))
     assert "PreToolUse" not in saved["hooks"]
-    assert _post_repowise_entries(saved) == [("Bash|Grep|Glob", "repowise-augment")]
+    assert _post_repowise_entries(saved) == [("Bash|Grep|Glob", "repowise-sloth-augment")]
 
 
 def test_install_claude_code_hooks_idempotent_on_current_shape(
@@ -306,7 +306,7 @@ def test_migrate_claude_code_hooks_handles_full_legacy_payload(
 
     saved = json.loads(settings_path.read_text(encoding="utf-8"))
     assert "PreToolUse" not in saved["hooks"]
-    assert _post_repowise_entries(saved) == [("Bash|Grep|Glob", "repowise-augment")]
+    assert _post_repowise_entries(saved) == [("Bash|Grep|Glob", "repowise-sloth-augment")]
 
     # Idempotent: a second run finds nothing to do.
     assert claude_config.migrate_claude_code_hooks() is False
@@ -328,7 +328,7 @@ def test_migrate_claude_code_hooks_preserves_user_sibling_hook(
                         {
                             "matcher": "Grep|Glob",
                             "hooks": [
-                                {"type": "command", "command": "repowise-augment"},
+                                {"type": "command", "command": "repowise-sloth-augment"},
                                 {"type": "command", "command": "echo hi"},
                             ],
                         }
@@ -358,7 +358,7 @@ def test_migrate_claude_code_hooks_noop_when_already_current(
             "PostToolUse": [
                 {
                     "matcher": "Bash|Grep|Glob",
-                    "hooks": [{"type": "command", "command": "repowise-augment"}],
+                    "hooks": [{"type": "command", "command": "repowise-sloth-augment"}],
                 }
             ]
         }

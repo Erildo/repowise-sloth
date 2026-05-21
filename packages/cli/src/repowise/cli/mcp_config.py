@@ -16,10 +16,10 @@ def generate_mcp_config(repo_path: Path) -> dict:
     abs_path = str(repo_path.resolve()).replace("\\", "/")
     return {
         "mcpServers": {
-            "repowise": {
-                "command": "repowise",
+            "repowise-sloth": {
+                "command": "repowise-sloth",
                 "args": ["mcp", abs_path, "--transport", "stdio"],
-                "description": "repowise: codebase intelligence — docs, graph, git signals, dead code, decisions",
+                "description": "repowise-sloth: codebase intelligence — docs, graph, git signals, dead code, decisions",
             }
         }
     }
@@ -103,7 +103,7 @@ def load_existing_config(config_path: Path) -> dict:
 def format_setup_instructions(repo_path: Path) -> str:
     """Return human-readable setup instructions for MCP clients."""
     config = generate_mcp_config(repo_path)
-    server_block = json.dumps(config["mcpServers"]["repowise"], indent=4)
+    server_block = json.dumps(config["mcpServers"]["repowise-sloth"], indent=4)
     abs_path = str(repo_path.resolve()).replace("\\", "/")
 
     return f"""
@@ -117,12 +117,12 @@ Cursor (.cursor/mcp.json):
 
 Cline (cline_mcp_settings.json):
   "mcpServers": {{
-    "repowise": {server_block}
+    "repowise-sloth": {server_block}
   }}
 
 Or run directly:
-  repowise mcp {abs_path}
-  repowise mcp {abs_path} --transport sse --port 7338
+  repowise-sloth mcp {abs_path}
+  repowise-sloth mcp {abs_path} --transport sse --port 7338
 
 Config saved to: {repo_path / ".repowise" / "mcp.json"}
 """.strip()

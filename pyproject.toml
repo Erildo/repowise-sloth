@@ -1,12 +1,14 @@
 # ---------------------------------------------------------------------------
-# repowise — unified PyPI package
+# repowise-sloth — fork of repowise (unified PyPI package, renamed to avoid
+# collision with upstream `repowise` on PyPI / PATH).
+# Python import namespace `repowise.*` is preserved.
 # ---------------------------------------------------------------------------
 [build-system]
 requires = ["setuptools>=75"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "repowise"
+name = "repowise-sloth"
 version = "0.10.0"
 description = "The codebase intelligence layer for your AI coding agent — dependency graph, git history, dead code, decisions, and code health, exposed over MCP"
 readme = "README.md"
@@ -110,8 +112,8 @@ dev = [
 ]
 
 [project.scripts]
-repowise = "repowise.cli.main:cli"
-repowise-augment = "repowise.cli.augment_hook:main"
+repowise-sloth = "repowise.cli.main:cli"
+repowise-sloth-augment = "repowise.cli.augment_hook:main"
 
 [project.urls]
 Homepage = "https://github.com/repowise-dev/repowise"
